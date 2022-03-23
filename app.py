@@ -1,7 +1,9 @@
+import csv
+
 from flask import Flask, request, jsonify, render_template, url_for, redirect
 from redis import Redis
 from ProductController import *
-import pandas as pd
+
 
 
 
@@ -74,29 +76,29 @@ def CSVproducts():
     return render_template('createCsvProducts.html')
 
 
-def parseCSV(filePath):
-    a = Products()
-    # CVS Column Names
-    col_names = ['name', 'default_code', 'list_price', 'company_id']
-    # Use Pandas to parse the CSV file
-    csvData = pd.read_csv(filePath, names=col_names, header=None)
-    # Loop through the Rows
-    for i, row in csvData.iterrows():
-        a.createCsvProducts(row['name', row['default_code'], row['list_price'], row['company_id']])
+
 
 
 # Get the uploaded files
 @app.route("/CSVproductsAdded", methods=['POST'])
 def uploadFiles():
-      # get the uploaded file
-      uploaded_file = request.files['file']
-      if uploaded_file.filename != '':
-           file_path = os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)
-          # set the file path
-           uploaded_file.save(file_path)
-          # save the file
+    if request.method == 'POST':
+        # Create variable for uploaded file
+        f = request.files['fileupload']
 
-      parseCSV(redirect(url_for('index')))
+        # store the file contents as a string
+        fstring = f.read()
+
+        # create list of dictionaries keyed by header row
+        csv_dicts = [{k: v for k, v in row.items()} for row in csv.DictReader(fstring.splitlines(), skipinitialspace=True)]
+
+
+
+        # do something list of dictionaries
+        a = Products()
+        for i in csv_dicts:
+            a.createCsvProducts(csv_dicts[i]['name'], csv_dicts[i]['default_code'], csv_dicts[i]['list_price'], csv_dicts[i]['company_id'])
+    return "success"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
