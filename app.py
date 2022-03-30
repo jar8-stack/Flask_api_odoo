@@ -3,19 +3,13 @@ import csv
 from flask import Flask, request, jsonify, render_template, url_for, redirect
 from redis import Redis
 from ProductController import *
-
-
-
+import codecs
 
 import os
 from os.path import join, dirname, realpath
 
-
 app = Flask(__name__)
 redis = Redis(host='redis', port=6379)
-
-
-
 
 
 @app.route('/')
@@ -26,10 +20,10 @@ def hello():
     return render_template('listado_productos.html', len=len(arrayProducts), Products=arrayProducts)
 
 
-
 @app.route('/products')
 def products():
     return render_template('addProducts.html')
+
 
 @app.route('/addProducts', methods=['POST'])
 def addProducts():
@@ -64,6 +58,7 @@ def deleteProducts():
 
         return render_template('listado_productos.html', len=len(arrayProducts), Products=arrayProducts)
 
+
 # enable debugging mode
 app.config["DEBUG"] = True
 
@@ -71,34 +66,34 @@ app.config["DEBUG"] = True
 UPLOAD_FOLDER = 'static/files'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+
 @app.route('/CSVproducts')
 def CSVproducts():
     return render_template('createCsvProducts.html')
 
 
-
-
-
 # Get the uploaded files
 @app.route("/CSVproductsAdded", methods=['POST'])
 def uploadFiles():
-    if request.method == 'POST':
-        # Create variable for uploaded file
-        f = request.files['fileupload']
+    data = []
+    if request.method == "POST":
+        flask_file = request.files['fileupload']  # This line uses the same variable and worked fine
+        if not flask_file:
+            return 'Upload a CSV file'
 
-        # store the file contents as a string
-        fstring = f.read()
+        stream = codecs.iterdecode(flask_file.stream, 'utf-8')
+        for row in csv.reader(stream, dialect=csv.excel):
+            if row:
+                data.append(row)
 
-        # create list of dictionaries keyed by header row
-        csv_dicts = [{k: v for k, v in row.items()} for row in csv.DictReader(fstring.splitlines(), skipinitialspace=True)]
+        data.pop(0)
 
-
-
-        # do something list of dictionaries
         a = Products()
-        for i in csv_dicts:
-            a.createCsvProducts(csv_dicts[i]['name'], csv_dicts[i]['default_code'], csv_dicts[i]['list_price'], csv_dicts[i]['company_id'])
-    return "success"
+        for row in data:
+            a.createCsvProducts(row[0], row[1], row[2], row[3])
+
+    return "Succes"
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
