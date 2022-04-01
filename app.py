@@ -95,5 +95,29 @@ def uploadFiles():
     return "Succes"
 
 
+@app.route("/UpdateProducts", methods=['POST'])
+def updateView():
+    if request.method == 'POST':
+        idProducto = request.form['idProduct']
+        nombreProducto = request.form['nameProduct']
+        precioProducto = request.form['priceProduct']
+        company = request.form['companyProduct']
+
+        dictDatos= {'id':idProducto, 'nombre':nombreProducto, 'precio':precioProducto, 'company':company}
+
+        return render_template('updateProducts.html', datosProducto=dictDatos)
+
+
+@app.route('/UpdateProductFinal', methods=['POST'])
+def updateFinal():
+    if request.method == 'POST':
+        idProducto = request.form['idProduct']
+        nombreProducto = request.form['nameProduct']
+        precioProducto = request.form['priceProduct']
+        company = request.form['companyProduct']
+
+        a = Products()
+        
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

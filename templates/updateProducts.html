@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Actualizar productos</title>
+</head>
+<body>
+<form action="" method="post">
+    <h3>Id del producto</h3> <br>
+    <input type="text" value={{datosProducto['id']}} name="idProduct" id="idProduct"> <br>
+    <h3>Nombre del producto</h3> <br>
+    <input type="text" value={{datosProducto['nombre']}} name="nameProduct" id="nameProduct"> <br>
+
+    <h3>List price del producto</h3> <br>
+    <input type="text" value={{datosProducto['precio']}} name="priceProduct" id="priceProduct"> <br>
+
+    <h3>Company id del producto</h3> <br>
+    <input type="text" value={{datosProducto['company']}} name="companyProduct" id="companyProduct"> <br><br>
+
+
+    <button type="submit">Actualizar producto</button>
+</form>
+</body>
+</html>
