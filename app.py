@@ -5,8 +5,9 @@ from flask import Flask, request, jsonify, render_template, url_for, redirect
 from redis import Redis
 from ProductController import *
 import codecs
-import os
-from flask import Flask, request, jsonify
+from flask import Flask, request
+
+import smtplib, ssl
 
 app = Flask(__name__)
 redis = Redis(host='redis', port=6379)
@@ -15,6 +16,40 @@ redis = Redis(host='redis', port=6379)
 @app.route('/')
 def hello():
     return render_template('login.html')
+
+
+@app.route('/recuperarPassword')
+def recuperarView():
+    return render_template('recuperarPassword.html')
+
+
+@app.route('/recuperarPasswordController', methods=['POST', 'GET'])
+def recuperarController():
+    if request.method == 'POST':
+        email = request.form['email']
+
+
+
+        return render_template('login.html')
+
+
+@app.route('/viewEpecificProduct', methods=['POST'])
+def viewEspecificProduct():
+    a_file = open("db/users.json", "r")
+    json_object = json.load(a_file)
+    if request.method == 'POST':
+        if not json_object["usuarios"]["isLogged"]:
+            return render_template('login.html')
+        else:
+
+            idProducto = request.form['idProductViz']
+            a = Products()
+
+            producto = a.getEspecificProduct(idProducto)
+
+
+            return render_template('especificProduct.html', len=len(producto), Products=producto)
+
 
 
 @app.route('/logOut', methods=['POST', 'GET'])

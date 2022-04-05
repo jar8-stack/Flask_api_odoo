@@ -6,6 +6,19 @@ class Products(OdooConnection):
     def __init__(self, *args):
         super().__init__()
 
+    def getEspecificProduct(self, idProducto):
+        products = self.models.execute_kw(self.db, self.uid, self.password,
+                                          'product.template', 'search_read',
+                                          [
+                                              [
+                                                  ['id', '=', int(idProducto)]
+                                              ]
+                                          ], {
+                                              'fields': []
+                                          })
+
+        return products
+
     def getProducts(self):
         products = self.models.execute_kw(self.db, self.uid, self.password,
                                           'product.template', 'search_read',

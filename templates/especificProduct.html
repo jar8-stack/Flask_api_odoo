@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Especific product</title>
+</head>
+<style>
+table, th, td {
+  border:1px solid black;
+}
+</style>
+
+<body>
+  <table>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Default code</th>
+        <th>List price</th>
+        <th>Id company</th>
+    </tr>
+    {%for i in range(0, len)%}
+    <tr>
+        <td>{{Products[i]['id']}}</td>
+        <td>{{Products[i]['name']}}</td>
+        <td>{{Products[i]['default_code']}}</td>
+        <td>{{Products[i]['list_price']}}</td>
+        <td>{{Products[i]['company_id']}}</td>
+
+    </tr>
+    {%endfor%}
+</table>
+</body>
+</html>

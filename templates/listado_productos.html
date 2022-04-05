@@ -40,6 +40,12 @@ table, th, td {
 
                 <button type="submit">Edit</button>
             </form>
+
+            <form action="http://localhost:5001/viewEpecificProduct" method="post">
+                <input type="text" value={{Products[i]['id']}} name="idProductViz" id="idProductViz"> <br>
+
+                <button type="submit">View</button>
+            </form>
             <button> Delete</button>
         </td>
     </tr>
