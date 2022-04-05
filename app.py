@@ -4,9 +4,7 @@ from flask import Flask, request, jsonify, render_template, url_for, redirect
 from redis import Redis
 from ProductController import *
 import codecs
-
-import os
-from os.path import join, dirname, realpath
+import time
 
 app = Flask(__name__)
 redis = Redis(host='redis', port=6379)
@@ -117,7 +115,16 @@ def updateFinal():
         company = request.form['companyProduct']
 
         a = Products()
-        
+
+        a.updateProduct(idProducto, nombreProducto, precioProducto)
+
+
+        arrayProducts = a.getProducts()
+
+        return render_template('listado_productos.html', len=len(arrayProducts), Products=arrayProducts)
+
+
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

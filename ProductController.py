@@ -6,7 +6,6 @@ class Products(OdooConnection):
     def __init__(self, *args):
         super().__init__()
 
-
     def getProducts(self):
         products = self.models.execute_kw(self.db, self.uid, self.password,
                                           'product.template', 'search_read',
@@ -20,7 +19,6 @@ class Products(OdooConnection):
 
         return products
 
-
     def createCsvProducts(self, name, defaultCode, listPrice, companyId):
         id = self.models.execute_kw(self.db, self.uid, self.password, 'product.template', 'create',
                                     [
@@ -32,7 +30,6 @@ class Products(OdooConnection):
                                         }
                                     ])
         print(id)
-
 
     def createProducts(self):
         id = self.models.execute_kw(self.db, self.uid, self.password, 'product.template', 'create',
@@ -46,15 +43,15 @@ class Products(OdooConnection):
                                     ])
         print(id)
 
-
-    def updateProduct(self):
-        product = self.models.execute_kw(self.db, self.uid, self.password, 'product.template', 'write', [[2], {
-            'name': "Clase-Jueves Update",
-            "price": "4567"
-        }])
+    def updateProduct(self, idProduct, name, listPrice):
+        product = self.models.execute_kw(self.db, self.uid, self.password, 'product.template', 'write',
+                                         [[int(idProduct)], {
+                                             'name': str(name),
+                                             "price": str(listPrice)
+                                         }])
         print(product)
 
-
     def deleteProduct(self, idProducto):
-        delete = self.models.execute_kw(self.db, self.uid, self.password, 'product.template', 'unlink', [[int(idProducto)]])
+        delete = self.models.execute_kw(self.db, self.uid, self.password, 'product.template', 'unlink',
+                                        [[int(idProducto)]])
         print(delete)
