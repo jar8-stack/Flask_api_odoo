@@ -17,6 +17,27 @@ def hello():
     return render_template('login.html')
 
 
+@app.route('/logOut', methods=['POST', 'GET'])
+def logOut():
+    a_file = open("db/users.json", "r")
+    json_object = json.load(a_file)
+    if request.method == 'POST':
+        json_object["usuarios"]["isLogged"] = False
+        a_file = open("db/users.json", "w")
+        json.dump(json_object, a_file)
+        return render_template('login.html')
+
+    if request.method == 'GET':
+        if not json_object["usuarios"]["isLogged"]:
+            return render_template('login.html')
+        else:
+            a = Products()
+            arrayProducts = a.getProducts()
+
+            return render_template('listado_productos.html', len=len(arrayProducts), Products=arrayProducts)
+    a_file.close()
+
+
 @app.route('/listaProductos', methods=['POST', 'GET'])
 def productList():
     a_file = open("db/users.json", "r")
