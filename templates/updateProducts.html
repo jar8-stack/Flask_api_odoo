@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Actualizar productos</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 <body>
-<form action="" method="post">
+<form id="form" method="post">
     <h3>Id del producto</h3> <br>
     <input type="text" value={{datosProducto['id']}} name="idProduct" id="idProduct"> <br>
     <h3>Nombre del producto</h3> <br>
@@ -27,4 +28,22 @@
         <button type="submit">Cerrar sesión</button>
     </form>
 </body>
+<script type="text/javascript">
+
+    $("#form").submit(function (e) {
+        e.preventDefault();
+        var serializedData = $(this).serialize();
+        console.log(serializedData);
+        $.ajax({
+            type: 'POST',
+            url: '/updateProductFinal',
+            data: serializedData,
+            success: function () {
+                alert("Producto actualizado");
+            },error:function(err){
+                console.log(err);
+            }
+        })
+    })
+</script>
 </html>

@@ -264,7 +264,7 @@ def updateView():
     a_file.close()
 
 
-@app.route('/UpdateProductFinal', methods=['POST', 'GET'])
+@app.route('/updateProductFinal', methods=['POST', 'GET'])
 def updateFinal():
     a_file = open("db/users.json", "r")
     json_object = json.load(a_file)
@@ -281,9 +281,9 @@ def updateFinal():
 
             a.updateProduct(idProducto, nombreProducto, precioProducto)
 
-            arrayProducts = a.getProducts()
+            #arrayProducts = a.getProducts()
 
-            return render_template('listado_productos.html', len=len(arrayProducts), Products=arrayProducts)
+            return "Actualizado"
 
     if request.method == 'GET':
         if not json_object["usuarios"]["isLogged"]:
