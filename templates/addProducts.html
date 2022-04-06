@@ -35,6 +35,9 @@
 
     <br>
     <br>
+    <form action="http://localhost:5001/listaProductos" method="get">
+        <button type="submit">Volver</button>
+    </form>
     <form action="http://localhost:5001/logOut" method="post">
         <button type="submit">Cerrar sesión</button>
     </form>
@@ -50,35 +53,13 @@
             type: 'POST',
             url: '/addProducts',
             data: serializedData,
-            success: function (res) {
-                if (res.status == "success") {
-                    alert(res);
-                }
+            success: function () {
+                alert("Producto agregado");
             },error:function(err){
                 console.log(err);
             }
         })
     })
-    /*function sendProduct() {
-        let name = document.getElementById("name").value;
-        let defaultCode = document.getElementById("defaultCode").value;
-        let precio = document.getElementById("precio").value;
-        let idCompany = document.getElementById("idCompany").value;
-
-        console.log(name);
-
-
-        $.ajax({
-            type: 'POST',
-            url: '/addProducts',
-            data: { 'name': name, 'defaultCode': defaultCode, 'precio': precio, 'idCompany': idCompany },
-            success: function (res) {
-                if (res.status == "success") {
-                    alert(res);
-                }
-            }
-        })
-    }*/
 </script>
 
 </html>
