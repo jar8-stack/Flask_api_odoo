@@ -1,34 +1,37 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <title>Add products</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
+
 <body>
-    <form action = "http://localhost:5001/addProducts" method = "POST">
-         <p>Pon los atributos del producto:</p>
+    <form id="form" method="post">
+        <p>Pon los atributos del producto:</p>
         <br><br>
 
-         <p>Nombre del producto:</p>
-         <p><input type = "text" name = "name" /></p>
-
-        <br><br>
-
-         <p>Default code del producto:</p>
-         <p><input type = "text" name = "defaultCode" /></p>
+        <p>Nombre del producto:</p>
+        <p><input type="text" name="name" id="name" /></p>
 
         <br><br>
 
-         <p>Precio del producto:</p>
-         <p><input type = "text" name = "precio" /></p>
+        <p>Default code del producto:</p>
+        <p><input type="text" name="defaultCode" id="defaultCode" /></p>
 
         <br><br>
 
-         <p>Id de compañia del producto:</p>
-         <p><input type = "text" name = "idCompany" /></p>
+        <p>Precio del producto:</p>
+        <p><input type="text" name="precio" id="precio" /></p>
 
-         <p><input type = "submit" value = "Agregar producto" /></p>
-      </form>
+        <br><br>
+
+        <p>Id de compañia del producto:</p>
+        <p><input type="text" name="idCompany" id="idCompany" /></p>
+
+        <p><input type="submit" value="Agregar producto" /></p>
+    </form>
 
     <br>
     <br>
@@ -36,4 +39,46 @@
         <button type="submit">Cerrar sesión</button>
     </form>
 </body>
+<script type="text/javascript">
+
+    $("#form").submit(function (e) {
+        e.preventDefault();
+        var serializedData = $(this).serialize();
+
+        console.log(serializedData);
+        $.ajax({
+            type: 'POST',
+            url: '/addProducts',
+            data: serializedData,
+            success: function (res) {
+                if (res.status == "success") {
+                    alert(res);
+                }
+            },error:function(err){
+                console.log(err);
+            }
+        })
+    })
+    /*function sendProduct() {
+        let name = document.getElementById("name").value;
+        let defaultCode = document.getElementById("defaultCode").value;
+        let precio = document.getElementById("precio").value;
+        let idCompany = document.getElementById("idCompany").value;
+
+        console.log(name);
+
+
+        $.ajax({
+            type: 'POST',
+            url: '/addProducts',
+            data: { 'name': name, 'defaultCode': defaultCode, 'precio': precio, 'idCompany': idCompany },
+            success: function (res) {
+                if (res.status == "success") {
+                    alert(res);
+                }
+            }
+        })
+    }*/
+</script>
+
 </html>

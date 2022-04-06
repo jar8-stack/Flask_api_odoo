@@ -12,10 +12,10 @@ class OdooConnection(object):
     common = None
 
     def __init__(self, *args):
-        self.url = "http://192.168.10.1:8069"
-        self.password = "Serranosoto1"
-        self.user = "saidserrano315@gmail.com"
-        self.db = "sie_modelo"
+        self.url = "http://192.168.1.75:8069"
+        self.password = "12345"
+        self.user = "aguero_5209@hotmail.com"
+        self.db = "db_carlos"
 
         self.models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(self.url))
         self.common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(self.url))
