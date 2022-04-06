@@ -1,5 +1,6 @@
 import csv
 import json
+import sys
 
 from flask import Flask, request, jsonify, render_template, url_for, redirect
 from redis import Redis
@@ -7,7 +8,8 @@ from ProductController import *
 import codecs
 from flask import Flask, request
 
-import smtplib, ssl
+import smtplib
+import ssl
 
 app = Flask(__name__)
 redis = Redis(host='redis', port=6379)
@@ -28,8 +30,6 @@ def recuperarController():
     if request.method == 'POST':
         email = request.form['email']
 
-
-
         return render_template('login.html')
 
 
@@ -47,9 +47,7 @@ def viewEspecificProduct():
 
             producto = a.getEspecificProduct(idProducto)
 
-
             return render_template('especificProduct.html', len=len(producto), Products=producto)
-
 
 
 @app.route('/logOut', methods=['POST', 'GET'])
@@ -108,31 +106,37 @@ def productList():
 
 @app.route('/addProducts', methods=['POST', 'GET'])
 def addProducts():
-    a_file = open("db/users.json", "r")
-    json_object = json.load(a_file)
+
     if request.method == 'POST':
-        if not json_object["usuarios"]["isLogged"]:
-            return render_template('login.html')
-        else:
-            nombreProducto = request.form['name']
-            defaultCode = request.form['defaultCode']
-            precio = request.form['precio']
-            idCompany = request.form['idCompany']
+        #if not json_object["usuarios"]["isLogged"]:
+        #    return render_template('login.html')
+        #else:
+        nombreProducto = request.form['name']
+        defaultCode = request.form['defaultCode']
+        precio = request.form['precio']
+        idCompany = request.form['idCompany']
 
-            a = Products()
-            a.createCsvProducts(nombreProducto, defaultCode, precio, idCompany)
+        a = Products()
+        print("name "+nombreProducto, file=sys.stderr)
+        print("defaultCode "+defaultCode, file=sys.stderr)
+        print("precio"+precio, file=sys.stderr)
+        print("idCompany "+idCompany, file=sys.stderr)
 
-            arrayProducts = a.getProducts()
+        a.createCsvProducts(nombreProducto, defaultCode, precio, idCompany)
+        
+        #arrayProducts = a.getProducts()
 
-            return render_template('listado_productos.html', len=len(arrayProducts), Products=arrayProducts)
+        return "Agregado"
 
     if request.method == 'GET':
+        a_file = open("db/users.json", "r")
+        json_object = json.load(a_file)
         if not json_object["usuarios"]["isLogged"]:
             return render_template('login.html')
         else:
-            a = Products()
-            arrayProducts = a.getProducts()
-            return render_template('addProducts.html', len=len(arrayProducts), Products=arrayProducts)
+            #a = Products()
+            #arrayProducts = a.getProducts()
+            return render_template('addProducts.html')
 
     a_file.close()
 
@@ -206,7 +210,8 @@ def uploadFiles():
         if not json_object["usuarios"]["isLogged"]:
             return render_template('login.html')
         else:
-            flask_file = request.files['fileupload']  # This line uses the same variable and worked fine
+            # This line uses the same variable and worked fine
+            flask_file = request.files['fileupload']
             if not flask_file:
                 return 'Upload a CSV file'
 
@@ -244,7 +249,8 @@ def updateView():
             precioProducto = request.form['priceProduct']
             company = request.form['companyProduct']
 
-            dictDatos = {'id': idProducto, 'nombre': nombreProducto, 'precio': precioProducto, 'company': company}
+            dictDatos = {'id': idProducto, 'nombre': nombreProducto,
+                'precio': precioProducto, 'company': company}
 
             return render_template('updateProducts.html', datosProducto=dictDatos)
     if request.method == 'GET':
