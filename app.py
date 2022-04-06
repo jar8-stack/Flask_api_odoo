@@ -106,19 +106,6 @@ def productList():
             return render_template('listado_productos.html', len=len(arrayProducts), Products=arrayProducts)
 
 
-@app.route('/products')
-def products():
-    a_file = open("db/users.json", "r")
-    json_object = json.load(a_file)
-
-    if not json_object["usuarios"]["isLogged"]:
-        return render_template('login.html')
-    else:
-        return render_template('addProducts.html')
-
-    a_file.close()
-
-
 @app.route('/addProducts', methods=['POST', 'GET'])
 def addProducts():
     a_file = open("db/users.json", "r")
@@ -145,7 +132,7 @@ def addProducts():
         else:
             a = Products()
             arrayProducts = a.getProducts()
-            return render_template('listado_productos.html', len=len(arrayProducts), Products=arrayProducts)
+            return render_template('addProducts.html', len=len(arrayProducts), Products=arrayProducts)
 
     a_file.close()
 
