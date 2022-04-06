@@ -152,7 +152,7 @@ def Dproducts():
     a_file.close()
 
 
-@app.route('/deleteProducts', methods=['POST', 'GET'])
+@app.route('/deleteProduct', methods=['POST'])
 def deleteProducts():
     a_file = open("db/users.json", "r")
     json_object = json.load(a_file)
@@ -160,22 +160,12 @@ def deleteProducts():
         if not json_object["usuarios"]["isLogged"]:
             return render_template('login.html')
         else:
-            idProducto = request.form['idProducts']
+            idProducto = request.form['idProduct']
 
             a = Products()
             a.deleteProduct(idProducto)
 
-            arrayProducts = a.getProducts()
-
-            return render_template('listado_productos.html', len=len(arrayProducts), Products=arrayProducts)
-    if request.method == 'GET':
-        if not json_object["usuarios"]["isLogged"]:
-            return render_template('login.html')
-        else:
-            a = Products()
-            arrayProducts = a.getProducts()
-            return render_template('listado_productos.html', len=len(arrayProducts), Products=arrayProducts)
-
+            return "Borrado"
     a_file.close()
 
 

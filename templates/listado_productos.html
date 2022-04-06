@@ -3,6 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <title>Listado de productos</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 <style>
 table, th, td {
@@ -51,15 +52,35 @@ table, th, td {
 
                 <button type="submit">View</button>
             </form>
-            <button> Delete</button>
+            <form id="deleteForm" method="post">
+                <input type="text" value={{Products[i]['id']}} name="idProduct" id="idProduct"> <br>
+
+                <button type="submit">Delete</button>
+            </form>
         </td>
     </tr>
     {%endfor%}
 </table>
 <ol>
 <!-- For loop logic of jinja template -->
-
 </ol>
-
 </body>
+<script type="text/javascript">
+
+    $("#deleteForm").submit(function (e) {
+        e.preventDefault();
+        var serializedData = $(this).serialize();
+        console.log(serializedData);
+        $.ajax({
+            type: 'POST',
+            url: '/deleteProduct',
+            data: serializedData,
+            success: function () {
+                alert("Producto borrado");
+            },error:function(err){
+                console.log(err);
+            }
+        })
+    })
+</script>
 </html>
